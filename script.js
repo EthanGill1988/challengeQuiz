@@ -1,25 +1,28 @@
 const startButton = document.getElementById("start");
-const questionCardElement = document.getElementById("hide");
+const questionCardElement = document.getElementById("questions");
 startButton.addEventListener("click", startGame);
 
 
-
-var chosenWord = '';
 var scoreCounter = 0;
 var isWin = false;
 var timer;
 var timerCount;
 var timerElement = document.querySelector(".timer");
+var questions = document.querySelector("#questions")
 
-var words = ["variable", "array", "DOM", "root", "setAttribute", "string", "boolean", "function"];
+var start = document.getElementById("start");
+var titleEl = document.getElementById("question-title");
 
-function init() {
+
+start.onclick = function() {
+    var div = document.getElementById("start-screen");
+    div.classList.add("hide");
     
-}
+};
 
 function startGame() {
     console.log("Started");
-    startButton.classList.add("hide");
+    
     questionCardElement.classList.remove("hide");
     isWin = false;
     timerCount = 50;
@@ -27,14 +30,40 @@ function startGame() {
 
     startTimer()
 }
-function setNextQuestion() {
+
+function showQuestion() {
+    var div = document.getElementById("questions");
+    questions.display.style("block");
+    //get the current question
+
+
+    //update the titleEl 
+
+
+    //update the options
+}
+
+function checkAnswer() {
+    // compare user selection to the correct answer of the the current question
+
+    // if correct 
+        // add points to score
+    // else
+        // subtract time from timer
+
+    // if there are more questions to ask
+        //show next question
+    //else 
+        // call endQuiz
 
 }
-function winGame() {
-    wordBlank.textContent = "Winner, Winner Chicken Dinner!! 🏆";
-    scoreCounter++
-    startButton.disabled = false;
 
+function endQuiz(){
+    //hide question-section
+
+    //show high-score section
+
+    //save users initials to local storage
 }
 
 function loseGame() {
@@ -52,18 +81,9 @@ function startTimer() {
     }, 1000)
 }
 
-function getRandomWords(array) {
-    var random = Math.random();
-    var rawIndex = random*array.length;
-    var index = Math.floor(rawIndex);
-    var item = array[index];
-
-    return item; 
-}
 
 
 
 
-init();
 
 
