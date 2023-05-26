@@ -38,7 +38,7 @@ function showQuestion() {
 
 
     //update the titleEl 
-
+    titleEl.display.style("block");
 
     //update the options
 }
