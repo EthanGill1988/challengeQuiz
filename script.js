@@ -3,25 +3,27 @@ const questionCardElement = document.getElementById("questions");
 startButton.addEventListener("click", startGame);
 
 
+
 var scoreCounter = 0;
 var isWin = false;
 var timer;
 var timerCount;
 var timerElement = document.querySelector(".timer");
-var questions = document.querySelector("#questions")
+var choices = document.querySelector("#choices")
 
 var start = document.getElementById("start");
-var titleEl = document.getElementById("question-title");
+var titleEl = document.getElementById("#question-title");
 
 
 start.onclick = function() {
-    var div = document.getElementById("start-screen");
+    var div = document.getElementById("startScreen");
     div.classList.add("hide");
     
 };
 
 function startGame() {
     console.log("Started");
+    startButton.classList.add("hide");
     
     questionCardElement.classList.remove("hide");
     isWin = false;
@@ -31,39 +33,77 @@ function startGame() {
     startTimer()
 }
 
+function setNextQuestion() {
+
+}
+
 function showQuestion() {
-    var div = document.getElementById("questions");
-    questions.display.style("block");
-    //get the current question
+    var choicesElement = document.getElementById("choices");
+    choicesElement.style.display = "block";
+    
+    questionCardElement.classList.remove("hide");
+    
+    // Get the current question
+    var currentQuestion = questions[currentQuestionIndex];
+    
+    // Update the titleEl
+    titleEl.textContent = currentQuestion.question;
+    
+    // Update the options
+    // Assuming you have option elements with IDs like "option1", "option2", etc.
+    for (var i = 0; i < currentQuestion.options.length; i++) {
+      var optionElement = document.getElementById("option" + (i + 1));
+      optionElement.textContent = currentQuestion.options[i];
+    }
+  }
 
+  function checkAnswer(event) {
+    var clickedEl = event.target;
+    var userSelection = clickedEl.innerText;
+  
+    // Get the current question
+    var currentQuestion = questions[currentQuestionIndex];
+  
+    // Compare user selection with the correct answer
+    if (userSelection === currentQuestion.answer) {
+      // Correct answer
+      scoreCounter++;
+    } else {
+      // Incorrect answer
+      timerCount -= 10; // Subtract 10 seconds from the timer
+    }
+  
+    // Proceed to the next question or end the quiz
+    if (currentQuestionIndex < questions.length - 1) {
+      // Still more questions to ask
+      currentQuestionIndex++;
+      showQuestion();
+    } else {
+      // No more questions, end the quiz
+      endQuiz();
+    }
+  }
 
-    //update the titleEl 
-    titleEl.display.style("block");
+  function endQuiz() {
+    // Hide question section
+    questionCardElement.classList.add("hide");
+  
+    // Show high-score section
+    var highScoreSection = document.getElementById("high-score");
+    highScoreSection.classList.remove("hide");
+  
+    // Save user's initials to local storage
+    var initials = prompt("Enter your initials:");
+    localStorage.setItem("initials", initials);
+  
+    // Additional logic for handling high scores or other end-of-quiz actions can be added here
+  }
 
-    //update the options
-}
+function winGame() {
+    wordBlank.textContent = "Winner, Winner Chicken Dinner!! 🏆";
+    scoreCounter++
+    startButton.disabled = false;
 
-function checkAnswer() {
-    // compare user selection to the correct answer of the the current question
-
-    // if correct 
-        // add points to score
-    // else
-        // subtract time from timer
-
-    // if there are more questions to ask
-        //show next question
-    //else 
-        // call endQuiz
-
-}
-
-function endQuiz(){
-    //hide question-section
-
-    //show high-score section
-
-    //save users initials to local storage
 }
 
 function loseGame() {
@@ -80,6 +120,8 @@ function startTimer() {
         }
     }, 1000)
 }
+
+    
 
 
 
