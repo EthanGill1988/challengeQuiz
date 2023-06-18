@@ -4,7 +4,10 @@ const titleEl = document.getElementById("question-title");
 const choicesElement = document.getElementById("choices");
 
 startButton.addEventListener("click", startGame);
-
+// the base code I was given had the questions in a seperate .js file. it took askBCS a half hour to tell me I didn't need it
+// i asked Ed and he seemed annoyed and said I was supposed to use it. Now I think the 'questions.js' was supposed to be 'scores.js'
+// either way, $12k (I only made $19k last year), for two people to give me answers that didn't help. 
+//anyways, heres the questions array.
 var questions = [
   {
     question: "I am used to store multiple values in a single variable, what am I?",
@@ -30,6 +33,7 @@ var timerCount;
 var timerElement = document.querySelector(".timer");
 var currentQuestionIndex = 0;
 
+// the startGame function that adds or removes the 'hide' attrivute and starts the timer.
 function startGame() {
   startButton.classList.add("hide");
   questionCardElement.classList.remove("hide");
@@ -40,7 +44,7 @@ function startGame() {
   showQuestion();
   startTimer();
 }
-
+// pulls questions from the question array
 function showQuestion() {
   var currentQuestion = questions[currentQuestionIndex];
   titleEl.textContent = currentQuestion.question;
@@ -55,7 +59,7 @@ function showQuestion() {
     choicesElement.appendChild(optionElement);
   }
 }
-
+// function to judge one's brain use skills 
 function checkAnswer(event) {
   var userSelection = event.target.textContent;
   var currentQuestion = questions[currentQuestionIndex];
@@ -75,32 +79,39 @@ function checkAnswer(event) {
   }
 }
 
+// ending the quiz, prompting the user and redirection to the High Scores page.
 function endQuiz() {
-  clearInterval(timer); // Stop the timer
-  questionCardElement.classList.add("hide"); // Hide the question card
+  clearInterval(timer); 
+  questionCardElement.classList.add("hide");
 
-  var finalScore = scoreCounter; // Get the final score
-
-  // Display the final score to the user
+  var finalScore = scoreCounter; 
   var finalScoreElement = document.getElementById("final-score");
   finalScoreElement.textContent = finalScore;
 
   var endScreenElement = document.getElementById("end-screen");
-  endScreenElement.classList.remove("hide"); // Show the end screen
+  endScreenElement.classList.remove("hide"); 
 
   var initialsInput = document.getElementById("initials");
   var submitButton = document.getElementById("submit");
 
   submitButton.addEventListener("click", function() {
-    var initials = initialsInput.value.trim(); // Get the entered initials
+    var initials = initialsInput.value.trim(); 
 
     if (initials !== "") {
-      // Save the score and initials to local storage or perform any other desired action
-      localStorage.setItem("score", finalScore);
-      localStorage.setItem("initials", initials);
-      alert("Score and initials saved!");
+      var scoreData = {
+        score: finalScore,
+        initials: initials,
+      };
 
-      // Redirect or navigate to a high scores page
+      var scores = JSON.parse(localStorage.getItem("scores")) || [];
+      scores.push(scoreData);
+      scores.sort(function(a, b) {
+        return b.score - a.score;
+      });
+
+      localStorage.setItem("scores", JSON.stringify(scores));
+
+      alert("Score and initials saved!");
       window.location.href = "highscores.html";
     } else {
       alert("Please enter your initials.");
