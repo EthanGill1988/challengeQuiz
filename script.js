@@ -1,124 +1,88 @@
 const startButton = document.getElementById("start");
 const questionCardElement = document.getElementById("questions");
+const titleEl = document.getElementById("question-title");
+const choicesElement = document.getElementById("choices");
+
 startButton.addEventListener("click", startGame);
 
-
+var questions = [
+  {
+    question: "I am used to store multiple values in a single variable, what am I?",
+    options: ["Directory", "Class", "Module", "Array"],
+    correctAnswer: "Array",
+  },
+  {
+    question: "I am a region where expressions and values can be referenced, what am I?",
+    options: ["Scope", "Database", "Module", "Brace"],
+    correctAnswer: "Scope",
+  }
+];
 
 var scoreCounter = 0;
 var isWin = false;
 var timer;
 var timerCount;
 var timerElement = document.querySelector(".timer");
-var choices = document.querySelector("#choices")
-
-var start = document.getElementById("start");
-var titleEl = document.getElementById("#question-title");
-
-
-start.onclick = function() {
-    var div = document.getElementById("startScreen");
-    div.classList.add("hide");
-    
-};
+var currentQuestionIndex = 0;
 
 function startGame() {
-    console.log("Started");
-    startButton.classList.add("hide");
-    
-    questionCardElement.classList.remove("hide");
-    isWin = false;
-    timerCount = 50;
-    startButton.disabled = true;
+  startButton.classList.add("hide");
+  questionCardElement.classList.remove("hide");
+  isWin = false;
+  timerCount = 50;
+  startButton.disabled = true;
 
-    startTimer()
-}
-
-function setNextQuestion() {
-
+  showQuestion();
+  startTimer();
 }
 
 function showQuestion() {
-    var choicesElement = document.getElementById("choices");
-    choicesElement.style.display = "block";
-    
-    questionCardElement.classList.remove("hide");
-    
-    // Get the current question
-    var currentQuestion = questions[currentQuestionIndex];
-    
-    // Update the titleEl
-    titleEl.textContent = currentQuestion.question;
-    
-    // Update the options
-    // Assuming you have option elements with IDs like "option1", "option2", etc.
-    for (var i = 0; i < currentQuestion.options.length; i++) {
-      var optionElement = document.getElementById("option" + (i + 1));
-      optionElement.textContent = currentQuestion.options[i];
-    }
+  var currentQuestion = questions[currentQuestionIndex];
+  titleEl.textContent = currentQuestion.question;
+
+  choicesElement.innerHTML = "";
+  for (var i = 0; i < currentQuestion.options.length; i++) {
+    var option = currentQuestion.options[i];
+    var optionElement = document.createElement("button");
+    optionElement.textContent = option;
+    optionElement.classList.add("option");
+    optionElement.addEventListener("click", checkAnswer);
+    choicesElement.appendChild(optionElement);
   }
-
-  function checkAnswer(event) {
-    var clickedEl = event.target;
-    var userSelection = clickedEl.innerText;
-  
-    // Get the current question
-    var currentQuestion = questions[currentQuestionIndex];
-  
-    // Compare user selection with the correct answer
-    if (userSelection === currentQuestion.answer) {
-      // Correct answer
-      scoreCounter++;
-    } else {
-      // Incorrect answer
-      timerCount -= 10; // Subtract 10 seconds from the timer
-    }
-  
-    // Proceed to the next question or end the quiz
-    if (currentQuestionIndex < questions.length - 1) {
-      // Still more questions to ask
-      currentQuestionIndex++;
-      showQuestion();
-    } else {
-      // No more questions, end the quiz
-      endQuiz();
-    }
-  }
-
-  function endQuiz() {
-    // Hide question section
-    questionCardElement.classList.add("hide");
-  
-    // Show high-score section
-    var highScoreSection = document.getElementById("high-score");
-    highScoreSection.classList.remove("hide");
-  
-    // Save user's initials to local storage
-    var initials = prompt("Enter your initials:");
-    localStorage.setItem("initials", initials);
-  
-    // Additional logic for handling high scores or other end-of-quiz actions can be added here
-  }
-
-function winGame() {
-    wordBlank.textContent = "Winner, Winner Chicken Dinner!! 🏆";
-    scoreCounter++
-    startButton.disabled = false;
-
 }
 
-function loseGame() {
-    wordBlank.textContent = "Don't Be Glum Chum, Give it a 'notha Whack!!";
-    startButton.disabled = false;
+function checkAnswer(event) {
+  var userSelection = event.target.textContent;
+  var currentQuestion = questions[currentQuestionIndex];
+
+  if (userSelection === currentQuestion.correctAnswer) {
+    scoreCounter++;
+  } else {
+    timerCount -= 10;
+  }
+
+  currentQuestionIndex++;
+
+  if (currentQuestionIndex < questions.length) {
+    showQuestion();
+  } else {
+    endQuiz();
+  }
+}
+
+function endQuiz() {
+  questionCardElement.classList.add("hide");
+  // Code for handling the end of the quiz
 }
 
 function startTimer() {
-    timer = setInterval(function() {
-        timerCount--;
-        timerElement.textContent = timerCount;
-        if (timerCount === 0) {
-            clearInterval(timer);
-        }
-    }, 1000)
+  timer = setInterval(function() {
+    timerCount--;
+    timerElement.textContent = timerCount;
+    if (timerCount === 0) {
+      clearInterval(timer);
+    }
+  }, 1000);
 }
 
     

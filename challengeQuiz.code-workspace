@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../quizChallenge/css"
+		},
+		{
+			"path": "../quizChallenge/sfx"
+		}
+	],
+	"settings": {}
+}
