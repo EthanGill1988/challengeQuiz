@@ -15,6 +15,11 @@ var questions = [
     question: "I am a region where expressions and values can be referenced, what am I?",
     options: ["Scope", "Database", "Module", "Brace"],
     correctAnswer: "Scope",
+  },
+  {
+    question: "I have Audio Processiong Disorder which means:",
+    options: ['live lectures are a pain in my butt', 'breakout rooms are brutal', 'please just give me a road map to follow', 'all the above'],
+    correctAnswer: 'all the above',
   }
 ];
 
@@ -71,8 +76,36 @@ function checkAnswer(event) {
 }
 
 function endQuiz() {
-  questionCardElement.classList.add("hide");
-  // Code for handling the end of the quiz
+  clearInterval(timer); // Stop the timer
+  questionCardElement.classList.add("hide"); // Hide the question card
+
+  var finalScore = scoreCounter; // Get the final score
+
+  // Display the final score to the user
+  var finalScoreElement = document.getElementById("final-score");
+  finalScoreElement.textContent = finalScore;
+
+  var endScreenElement = document.getElementById("end-screen");
+  endScreenElement.classList.remove("hide"); // Show the end screen
+
+  var initialsInput = document.getElementById("initials");
+  var submitButton = document.getElementById("submit");
+
+  submitButton.addEventListener("click", function() {
+    var initials = initialsInput.value.trim(); // Get the entered initials
+
+    if (initials !== "") {
+      // Save the score and initials to local storage or perform any other desired action
+      localStorage.setItem("score", finalScore);
+      localStorage.setItem("initials", initials);
+      alert("Score and initials saved!");
+
+      // Redirect or navigate to a high scores page
+      window.location.href = "highscores.html";
+    } else {
+      alert("Please enter your initials.");
+    }
+  });
 }
 
 function startTimer() {
