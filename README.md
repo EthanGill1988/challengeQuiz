@@ -9,3 +9,5 @@ didn't help. I need to work with people consistently to communicate adiquately w
 my coworkers better than they know themselves because of my coping strategies (APD). New tutors every week for various reasons makes it rough. 
 
 When using: select the answers when prompted. enter initials when prompted. 
+
+![Screenshot (5)](https://github.com/EthanGill1988/challengeQuiz/assets/131207044/55de0273-9169-4624-a32d-f64b42680af3)
